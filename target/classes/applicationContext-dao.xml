@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<!-- XML Config para los beans de persistencia -->
+
+	<!-- Inyectamos las propiedades del bean con los datos del archivo de propiedades -->
+	<bean id="connectionMgr" class="com.grupoatrium.persistencia.impl.ConnectionMgr">
+		<property name="driver" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="usuario" value="${user}" />
+		<property name="password" value="${pw}" />
+	</bean>
+
+	<!-- Creamos Bean Abstracto para ConnectionMgr, con referencia al bean connectionMgr -->
+	<bean id="abstractConnectionMgr" abstract="true">
+		<property name="connectionMgr" ref="connectionMgr" />
+	</bean>
+
+	<!-- Creamos Bean de LibrosDAO heredando del Bean Abstracto -->
+	<bean id="librosDAO" class="com.grupoatrium.persistencia.impl.LibrosDAO"
+		parent="abstractConnectionMgr" />
+
+	<!-- Creamos Bean de EditorialesDAO heredando del Bean Abstracto -->
+	<bean id="editorialesDAO" class="com.grupoatrium.persistencia.impl.EditorialesDAO"
+		parent="abstractConnectionMgr" />
+
+</beans>
+
